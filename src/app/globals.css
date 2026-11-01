@@ -1,0 +1,236 @@
+@import "tailwindcss";
+
+:root {
+  --color-ivory: #F7F2EA;
+  --color-champagne: #EAE0D3;
+  --color-espresso: #30231F;
+  --color-taupe: #817064;
+  --color-bronze: #A98563;
+  --color-chocolate: #2B201C;
+  --color-rose: #C9A9A0;
+}
+
+@theme inline {
+  --color-ivory: #F7F2EA;
+  --color-champagne: #EAE0D3;
+  --color-espresso: #30231F;
+  --color-taupe: #817064;
+  --color-bronze: #A98563;
+  --color-chocolate: #2B201C;
+  --color-rose: #C9A9A0;
+
+  --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-sans: var(--font-manrope), "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Global Consistent Luxury Theme */
+html {
+  scroll-behavior: smooth;
+  /* Anchor targets land below the fixed header */
+  scroll-padding-top: 5.5rem;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #F7F2EA;
+  color: #30231F;
+}
+
+body {
+  background-color: #F7F2EA;
+  color: #30231F;
+  font-family: var(--font-sans);
+}
+
+/* Luxury Soft Selection */
+::selection {
+  background-color: #EAE0D3;
+  color: #30231F;
+}
+
+/* Custom Refined Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #F7F2EA;
+}
+::-webkit-scrollbar-thumb {
+  background: #A98563;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #817064;
+}
+
+/* ---------- Motion language ---------- */
+:root {
+  --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-ui: cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+/* Subtle editorial image zoom (pointer devices only, so touch never sticks zoomed) */
+.img-zoom {
+  transition: transform 0.9s var(--ease-editorial);
+}
+@media (hover: hover) {
+  .group:hover .img-zoom {
+    transform: scale(1.045);
+  }
+}
+
+/* Keyboard focus: one consistent bronze ring */
+:focus-visible {
+  outline: 1.5px solid #A98563;
+  outline-offset: 3px;
+}
+
+/* Tactile primary button: soft lift, sheen sweep and arrow nudge */
+.btn-tactile {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transition: transform 0.28s var(--ease-ui), box-shadow 0.28s var(--ease-ui),
+    background-color 0.28s var(--ease-ui), color 0.28s var(--ease-ui);
+}
+.btn-tactile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(105deg, transparent 30%, rgba(234, 224, 211, 0.16) 50%, transparent 70%);
+  transform: translateX(-110%);
+  transition: transform 0.75s var(--ease-editorial);
+}
+@media (hover: hover) {
+  .btn-tactile:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px -14px rgba(48, 35, 31, 0.55);
+  }
+  .btn-tactile:hover::before {
+    transform: translateX(110%);
+  }
+}
+.btn-tactile:active {
+  transform: translateY(0) scale(0.985);
+  transition-duration: 0.12s;
+}
+
+.arrow-nudge {
+  transition: transform 0.3s var(--ease-ui);
+}
+@media (hover: hover) {
+  .group:hover .arrow-nudge,
+  .btn-tactile:hover .arrow-nudge {
+    transform: translate(3px, -3px);
+  }
+}
+.group:focus-visible .arrow-nudge {
+  transform: translate(3px, -3px);
+}
+
+/* Editorial text link: hairline underline that wipes in from the left */
+.link-line {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 100% 100%;
+  background-size: 0% 1px;
+  transition: background-size 0.45s var(--ease-editorial), color 0.25s var(--ease-ui);
+}
+@media (hover: hover) {
+  .link-line:hover {
+    background-position: 0% 100%;
+    background-size: 100% 1px;
+  }
+}
+.link-line:focus-visible {
+  background-position: 0% 100%;
+  background-size: 100% 1px;
+}
+
+/* SplitText line masks inherit the heading's rhythm */
+.reveal-line {
+  display: block;
+}
+
+/* Hero entrance: hidden only when JS motion is confirmed (class set pre-paint in <head>),
+   and released automatically if the entrance never starts. */
+.js-motion [data-hero-hide] {
+  opacity: 0;
+}
+.js-motion [data-hero-clip] {
+  clip-path: inset(100% 0% 0% 0%);
+}
+
+/* Pinned editorial feature: stacked frames + panels only while pinned (desktop, full motion).
+   Otherwise it degrades to a single photograph followed by the full narrative. */
+section:not(.is-pinned) [data-feature-image]:not(:first-child) {
+  display: none;
+}
+.is-pinned [data-feature-progress] {
+  display: flex;
+}
+.is-pinned [data-feature-panels] {
+  display: grid;
+  gap: 0;
+}
+.is-pinned [data-feature-panel] {
+  grid-area: 1 / 1;
+}
+
+/* Gallery lightbox + booking modal entrances */
+@keyframes backdropIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes panelIn {
+  from { opacity: 0; transform: translateY(18px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.animate-backdropIn {
+  animation: backdropIn 0.35s var(--ease-ui) both;
+}
+.animate-panelIn {
+  animation: panelIn 0.6s var(--ease-editorial) both;
+}
+
+/* Admin detail drawer */
+@keyframes drawerIn {
+  from { transform: translateX(32px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+.animate-drawerIn {
+  animation: drawerIn 0.5s var(--ease-editorial) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Subtle fade in keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Restrained paper sheen */
+.paper-texture {
+  background-image: radial-gradient(rgba(169, 133, 99, 0.07) 1px, transparent 0);
+  background-size: 28px 28px;
+}
